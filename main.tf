@@ -21,7 +21,7 @@ resource "docker_container" "nginx" {
 
   env = [
     "NGINX_PORT=8080",
-    "RESPONSE_TEXT=My First and Lastname: <Your first and lastname>",
+    "RESPONSE_TEXT=My First and Lastname: Sviatoslav Nadorozhnyi",
   ]
 }
 
