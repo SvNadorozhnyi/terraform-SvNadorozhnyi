@@ -6,24 +6,26 @@ terraform {
   }
 }
 
-provider "docker" {
-  host = "unix:///var/run/docker.sock"
+provider "docker" {}
+
+resource "docker_image" "nginx" {
+  name = "nginx:latest"
+  keep_locally = false
 }
 
 resource "docker_container" "nginx" {
-  name  = "nginx_container"
-  image = "nginx:latest"
-
+  image = docker_image.nginx.latest
+  name = "nginx"
   ports {
     internal = 8080
     external = 8080
   }
-  
   upload {
-    source = "index.html"
+    source = "./index.html"
     file = "/usr/share/nginx/html/index.html"
   }
 }
+
 
 resource "docker_container" "mariadb" {
   name  = "mariadb_container"
