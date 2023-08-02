@@ -15,7 +15,7 @@ resource "docker_container" "nginx" {
   image = "nginx:latest"
 
   ports {
-    internal = 80
+    internal = 8080
     external = 8080
   }
 
@@ -36,6 +36,8 @@ resource "docker_container" "mariadb" {
 
   env = [
     "MYSQL_ROOT_PASSWORD=${var.db_root_password}",
+    "MYSQL_DATABASE=mydb",
+    "MYSQL_USER=myuser",
   ]
 }
 
