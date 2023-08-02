@@ -24,3 +24,21 @@ resource "docker_container" "nginx" {
     "RESPONSE_TEXT=My First and Lastname: <Your first and lastname>",
   ]
 }
+
+resource "docker_container" "mariadb" {
+  name  = "mariadb_container"
+  image = "mariadb:latest"
+
+  ports {
+    internal = 3306
+    external = 3306
+  }
+
+  env = [
+    "MYSQL_ROOT_PASSWORD=${var.db_root_password}",
+  ]
+}
+
+variable "db_root_password" {
+  description = "Root password for the MariaDB container"
+}
