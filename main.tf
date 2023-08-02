@@ -10,29 +10,17 @@ provider "docker" {
   host = "unix:///var/run/docker.sock"
 }
 
-# Nginx Container
 resource "docker_container" "nginx" {
-  name  = "nginx-container"
+  name  = "nginx_container"
   image = "nginx:latest"
+
   ports {
     internal = 80
     external = 8080
   }
-  volumes {
-    host_path      = "${path.module}/nginx.conf"
-    container_path = "/etc/nginx/conf.d/default.conf"
-  }
-}
 
-# MariaDB Container
-resource "docker_container" "mariadb" {
-  name  = "mariadb-container"
-  image = "mariadb:latest"
-  env   = [
-    "MYSQL_ROOT_PASSWORD=${var.db_root_password}"
+  env = [
+    "NGINX_PORT=8080",
+    "RESPONSE_TEXT=My First and Lastname: <Your first and lastname>",
   ]
-  ports {
-    internal = 3306
-    external = 3306
-  }
 }
