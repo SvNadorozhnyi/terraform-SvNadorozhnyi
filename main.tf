@@ -18,11 +18,11 @@ resource "docker_container" "nginx" {
     internal = 8080
     external = 8080
   }
-
-  env = [
-    "NGINX_PORT=8080",
-    "RESPONSE_TEXT=My First and Lastname: <Your first and lastname>",
-  ]
+  
+  upload {
+    source = "index.html"
+    file = "/usr/share/nginx/html/index.html"
+  }
 }
 
 resource "docker_container" "mariadb" {
