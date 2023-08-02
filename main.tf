@@ -19,10 +19,38 @@ resource "docker_container" "nginx" {
     external = 8080
   }
 
+data "template_file" "index_html" {
+  template = <<-EOT
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>My First and Lastname</title>
+    </head>
+    <body>
+        <h1>My First and Lastname: Sviatoslav Nadorozhnyi</h1>
+    </body>
+    </html>
+  EOT
+}
+
+resource "docker_volume" "nginx_volume" {
+  name = "nginx_html_volume"
+}
+
   env = [
     "NGINX_PORT=8080",
-    "RESPONSE_TEXT=My First and Lastname: Sviatoslav Nadorozhnyi",
   ]
+  
+volumes {
+    volume_name    = docker_volume.nginx_volume.name
+    container_path = "/usr/share/nginx/html"
+    read_only      = true
+  }
+
+  provisioner "local-exec" {
+    command = "echo '${data.template_file.index_html.rendered}' > index.html"
+    working_dir = "${path.module}"
+  }
 }
 
 resource "docker_container" "mariadb" {
