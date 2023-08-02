@@ -41,4 +41,5 @@ resource "docker_container" "mariadb" {
 
 variable "db_root_password" {
   description = "Root password for the MariaDB container"
+  default = "defaultpassword"
 }
